@@ -4,6 +4,7 @@ let init_invest = 1000;
 let for_days = 30;
 let init_apr = 619.67;
 let harvest_fees = 0.6;
+let apr_down = true;
 
 document.querySelector('#init_invest').value = init_invest;
 document.querySelector('#init_invest').addEventListener('change', (e) => {
@@ -25,10 +26,15 @@ document.querySelector('#harvest_fees').addEventListener('change', (e) => {
   harvest_fees = parseFloat(e.target.value);
   updateChart();
 });
+document.querySelector('#apr_down').checked = apr_down;
+document.querySelector('#apr_down').addEventListener('change', (e) => {
+  apr_down = e.target.checked;
+  updateChart();
+});
 
 function updateChart() {
-  myChart.data = initChart();
-  myChart.update();
+  chart.data = initChart();
+  chart.update();
 }
 
 function getRandomColor() {
@@ -41,7 +47,11 @@ function getRandomColor() {
 }
 
 function getNextAPR(current_apr) {
-  return Math.max(25, current_apr * 0.97);
+  if (apr_down) {
+    return Math.max(25, current_apr * 0.97);
+  } else {
+    return current_apr;
+  }
 }
 
 function compoundEvery(days) {
@@ -78,7 +88,7 @@ function initChart() {
     labels: [],
     datasets: [
       {
-        label: `Compound every 1 day`,
+        label: `Harvest every day`,
         data: compoundEvery(1),
         borderColor: getRandomColor(),
         fill: false,
@@ -95,7 +105,7 @@ function initChart() {
 
     if (current_compound[for_days - 1] > last_max + 2) {
       data.datasets.push({
-        label: `Compound every ${current_compound_every} days`,
+        label: `Harvest every ${current_compound_every} days`,
         data: current_compound,
         borderColor: getRandomColor(),
         fill: false,
@@ -112,7 +122,7 @@ function initChart() {
     label: `APR (%)`,
     data: Array.from(Array(for_days).keys()).map((_, i) => {
       prev_apr = i === 0 ? init_apr : getNextAPR(prev_apr);
-      return `${prev_apr}`;
+      return prev_apr;
     }),
     borderColor: 'red',
     fill: false,
@@ -122,25 +132,32 @@ function initChart() {
 
   data.labels = Array.from(Array(for_days).keys()).map((day) => `Day ${day + 1}`);
 
-  let innerHTML = 'Compound every XXX day(s)';
-  document.querySelector('#compound').innerHTML = innerHTML.replace(
-    'XXX',
-    data.datasets.length - 1
-  );
-
-  innerHTML = 'Max value after XXX days : YYY';
   const last_max = data.datasets[data.datasets.length - 2].data[for_days - 1].toFixed(0);
-  document.querySelector('#last_max').innerHTML = innerHTML
-    .replace('XXX', for_days)
-    .replace(
-      'YYY',
-      `${last_max} (+ ${(((last_max - init_invest) / init_invest) * 100).toFixed(1)}%)`
-    );
+  const result_percent = (((last_max - init_invest) / init_invest) * 100).toFixed(1);
+  let innerHTML = 'Harvest every XXX day(s) for YYY days : ZZZ';
+  document.querySelector('#results').innerHTML = innerHTML
+    .replace('XXX', data.datasets.length - 1)
+    .replace('YYY', for_days)
+    .replace('ZZZ', `${last_max} (+ ${result_percent}%)`);
+
+  addToHist(data.datasets.length - 1, last_max, result_percent);
 
   return data;
 }
 
-initChart();
+const table = document.querySelector('#hist');
+function addToHist(compound, last_max, result_percent) {
+  console.log(last_max);
+  const row = table.insertRow(1);
+  row.insertCell(0).innerHTML = init_invest;
+  row.insertCell(1).innerHTML = init_apr;
+  row.insertCell(2).innerHTML = apr_down ? 'yes' : 'no';
+  row.insertCell(3).innerHTML = `${for_days} day${for_days > 1 ? 's' : ''}`;
+  row.insertCell(4).innerHTML = `${compound} day${compound > 1 ? 's' : ''}`;
+  row.insertCell(5).innerHTML = harvest_fees;
+  row.insertCell(6).innerHTML = last_max;
+  row.insertCell(7).innerHTML = `${result_percent}%`;
+}
 
 const config = {
   type: 'line',
@@ -156,4 +173,4 @@ const config = {
     },
   },
 };
-const myChart = new Chart(document.getElementById('myChart'), config);
+const chart = new Chart(document.getElementById('chart'), config);
