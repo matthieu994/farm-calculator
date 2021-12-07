@@ -109,10 +109,10 @@ function initChart() {
 
   let prev_apr = init_apr;
   data.datasets.push({
-    label: `APR`,
+    label: `APR (%)`,
     data: Array.from(Array(for_days).keys()).map((_, i) => {
       prev_apr = i === 0 ? init_apr : getNextAPR(prev_apr);
-      return prev_apr;
+      return `${prev_apr}`;
     }),
     borderColor: 'red',
     fill: false,
