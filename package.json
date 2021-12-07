@@ -27,14 +27,7 @@
     "@zeit/git-hooks": "0.1.4",
     "eslint": "5.4.0"
   },
-  "eslintConfig": {
-    "extends": [
-      "@zeit/eslint-config-node"
-    ]
-  },
-  "git": {
-    "pre-commit": "lint-staged"
-  },
+  "eslintConfig": {},
   "dependencies": {
     "@zeit/schemas": "2.6.0",
     "ajv": "6.12.6",
