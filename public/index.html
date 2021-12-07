@@ -1,0 +1,43 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.2/dist/chart.min.js"></script>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<div id="results">
+			<h1 id="compound">Compound every XXX day(s)</h1>
+			<h1 id="last_max">Max value after XXX days : YYY</h1>
+		</div>
+
+		<div id="values">
+			<div>
+				<label for="init_invest">Init investment</label>
+				<input type="number" id="init_invest" min="100" step="100" />
+			</div>
+			<div>
+				<label for="for_days">Days to run</label>
+				<input type="number" id="for_days" />
+			</div>
+			<div>
+				<label for="init_apr">Init APR</label>
+				<input type="number" id="init_apr" />
+			</div>
+			<div>
+				<label for="harvest_fees"
+					>Harvest fees (same currency as investment)</label
+				>
+				<input type="number" id="harvest_fees" step="0.01" />
+			</div>
+		</div>
+
+		<div id="canvas_container">
+			<canvas id="myChart"></canvas>
+		</div>
+
+		<script src="test.js"></script>
+	</body>
+</html>

@@ -1,0 +1,27 @@
+* {
+	box-sizing: border-box;
+	margin: 0;
+	font-family: "Roboto";
+}
+
+#values {
+	padding: 5px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+}
+
+#values > div {
+	display: grid;
+}
+
+#canvas_container canvas {
+	max-height: 86vh;
+}
+
+#results {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
