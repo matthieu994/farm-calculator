@@ -188,7 +188,7 @@ function initChart() {
     .replace('YYY', inputs.for_days)
     .replace('ZZZ', `${last_max} (+ ${result_percent}%)`);
 
-  addToHist(data.datasets.length - 1, last_max, result_percent);
+  addToHist(data.datasets[data.datasets.length - 2].label, last_max, result_percent);
 
   return data;
 }
@@ -196,12 +196,12 @@ function initChart() {
 const table = document.querySelector('#hist');
 function addToHist(compound, last_max, result_percent) {
   const row = table.insertRow(1);
-  row.insertCell(0).innerHTML = inputs.init_invest;
-  row.insertCell(1).innerHTML = inputs.init_apr;
-  row.insertCell(2).innerHTML = inputs.apr_down ? 'yes' : 'no';
-  row.insertCell(3).innerHTML = `${inputs.for_days} day${inputs.for_days > 1 ? 's' : ''}`;
-  row.insertCell(4).innerHTML = `${compound} day${compound > 1 ? 's' : ''}`;
-  row.insertCell(5).innerHTML = inputs.harvest_fees;
+  row.insertCell(0).innerHTML = `${inputs.for_days} day${inputs.for_days > 1 ? 's' : ''}`;
+  row.insertCell(1).innerHTML = inputs.init_invest;
+  row.insertCell(2).innerHTML = inputs.init_apr;
+  row.insertCell(3).innerHTML = inputs.apr_down ? 'yes' : 'no';
+  row.insertCell(4).innerHTML = inputs.harvest_fees;
+  row.insertCell(5).innerHTML = `${compound.split(' ')[2]}`;
   row.insertCell(6).innerHTML = last_max;
   row.insertCell(7).innerHTML = `${result_percent}%`;
 }
