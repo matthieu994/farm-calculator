@@ -23,7 +23,7 @@
 }
 
 #container > #chart_container {
-  min-width: 60%;
+  min-width: 60vw;
 }
 
 table {
